@@ -21,8 +21,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(setq last-kbd-macro
-   nil)
+
 
 (setq default-directory "~/Dropbox/VM_VirtualBox" )
 
@@ -32,7 +31,6 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives
 '("marmalade" . "http://marmalade-repo.org/packages/"))
-
 
 
 ;; make emacs open full screen 
@@ -51,12 +49,18 @@
 (require 'ess-site)
 (require 'textmate)
 (require 'magit)
+(require 'auto-complete)
 
 ;; package specs
 (ido-mode t)
 (autopair-global-mode 1)
 (elpy-enable)
 (setenv "PYTHONPATH" "/usr/bin/python")
+
+;;R auto-complete
+(setq ess-use-auto-complete t)
+(ess-toggle-underscore nil)
+(global-auto-complete-mode t)
 
 ;; C++ mode
 (add-hook 'c-mode-common-hook
@@ -119,13 +123,26 @@
 
 ;; macro to login to app15
 (fset 'login-15
-   [?\M-x ?e ?s ?h ?e ?l ?l return ?c ?d ?  ?/ ?j ?m ?c ?m ?i ?l ?l ?a ?n ?@ ?1 ?0 ?. ?9 ?6 ?. ?2 ?6 ?. ?6 ?3 ?: ?/])
+   [?\M-x ?e ?s ?h ?e ?l ?l return ?c ?d ?  ?/ ?j ?m ?c ?m ?i ?l ?l ?a ?n ?@ ?1 ?0 ?. ?9 ?6 ?. ?2 ?6 ?. ?6 ?3 ?:])
 (global-set-key (kbd "C-x C-k 1") 'login-15)
+
+;; IP for app01 is 10.96.26.57
+;; IP for app02 is 10.96.26.47
 
 ;; macro to login to app16
 (fset 'login-16
-   [?\M-x ?e ?s ?h ?e ?l ?l return ?c ?d ?  ?/ ?j ?m ?c ?m ?i ?l ?l ?a ?n ?@ ?1 ?0 ?. ?9 ?6 ?. ?2 ?6 ?. ?6 ?4 ?: ?/])
+   [?\M-x ?e ?s ?h ?e ?l ?l return ?c ?d ?  ?/ ?j ?m ?c ?m ?i ?l ?l ?a ?n ?@ ?1 ?0 ?. ?9 ?6 ?. ?2 ?6 ?. ?6 ?4 ?:])
 (global-set-key (kbd "C-x C-k 2") 'login-16)
+
+;; login to devapp01
+
+(fset 'login-devapp1
+   [?\M-x ?e ?s ?h ?e ?l ?l return ?c ?d ?  ?/ ?j ?m ?c ?m ?i ?l ?l ?a ?n ?@ ?1 ?0 ?. ?9 ?6 ?. ?2 ?6 ?. ?5 ?7 ?:])
+(global-set-key (kbd "C-x C-k d") 'login-devapp1)
+
+(setq last-kbd-macro
+   nil)
+
 
 ;; type IP to app15 server
 (global-set-key (kbd "C-x C-j 1") "/jmcmillan@10.96.26.63:/")
@@ -160,12 +177,11 @@
 
 ;; make C-return send line to python shell
 (eval-after-load "elpy"
-  '(define-key elpy-mode-map (kbd " <C-return>") 'elpy-shell-send-current-block))
+  '(define-key elpy-mode-map (kbd " <C-return>") 'elpy-shell-send-current-statement))
 
 ;; shift C-return sends block to python shell
 (eval-after-load "elpy"
-(setq last-kbd-macro
-   nil)
   '(define-key elpy-mode-map (kbd " <C-S-return>") 'elpy-shell-send-region-or-buffer))
 
-
+;; macro for git-status
+(global-set-key (kbd "C-x g") 'magit-status)
